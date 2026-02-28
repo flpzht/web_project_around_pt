@@ -28,6 +28,7 @@ const initialCards = [
 const popupEditProfile = document.querySelector('#edit-popup');
 const popupAddCard = document.querySelector('#new-card-popup');
 const popupImage = document.querySelector('#image-popup');
+
 const popupProfileForm = popupEditProfile.querySelector('#edit-profile-form');
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description'); 
@@ -37,8 +38,20 @@ const profileCloeButton = popupEditProfile.querySelector('.popup__close');
 const profileNameInput = popupProfileForm.querySelector('.popup__input_type_name');
 const profileDescriptionInput = popupProfileForm.querySelector('.popup__input_type_description');
 
+const cardAddButton = document.querySelector('.profile__add-button');
+const cardCloseButton = popupAddCard.querySelector('.popup__close');
+const cardForm = popupAddCard.querySelector('#new-card-form');
+const cardNameInput = cardForm.querySelector('.popup__input_type_card-name');
+const cardLinkInput = cardForm.querySelector('.popup__input_type_url');
+
+const imagePopupCloseButton = popupImage.querySelector('.popup__close');
+const imagePopupImage = popupImage.querySelector('.popup__image');
+const imagePopupCaption = popupImage.querySelector('.popup__caption');
+
 const cardsTemplate = document.querySelector('#cards-template').content.querySelector('.card');
 const cardsList = document.querySelector('.cards__list');
+
+// Funções para abrir e fechar popups ======= //
 
 function openModal(modal) {
     modal.classList.add('popup_is-opened');
@@ -46,12 +59,16 @@ function openModal(modal) {
 function closeModal(modal) {
     modal.classList.remove('popup_is-opened');
 }
+
 profileEditButton.addEventListener('click', () => {
     handleOpenEditModal(popupEditProfile);
 });
 profileCloeButton.addEventListener('click', () => {
     closeModal(popupEditProfile);
 });
+imagePopupCloseButton.addEventListener('click', () => {
+    closeModal(popupImage);
+})
 
 function fillProfileForm() {
     profileNameInput.value = profileTitle.textContent;
@@ -81,11 +98,17 @@ function getCardElement(name = "Lugar sem nome", link = "./images/placeholder.jp
     cardImage.alt = name;
     cardTitle.textContent = name;
     likeButton.addEventListener('click', () => {
-        likeButton.classList.toggle('card__like-button_active');
+        likeButton.classList.toggle('card__like-button_is-active');
     });
     deleteButton.addEventListener('click', () => {
         cardElement.remove();
     }); 
+    cardImage.addEventListener('click', () => {
+        imagePopupImage.src = link;
+        imagePopupImage.alt = name;
+        imagePopupCaption.textContent = name;
+        openModal(popupImage);
+    });
 
     return cardElement;
 }
@@ -96,3 +119,19 @@ function renderCard(name, link, container) {
 initialCards.forEach((item) => {
     renderCard(item.name, item.link, cardsList);
 });
+
+cardAddButton.addEventListener('click', () => {
+    openModal(popupAddCard);
+});
+cardCloseButton.addEventListener('click', () => {
+    closeModal(popupAddCard);
+});
+function handleAddCardFormSubmit(evt) {
+    evt.preventDefault();
+    const name = cardNameInput.value || "Lugar sem nome";
+    const link = cardLinkInput.value || "./images/placeholder.jpg";
+    renderCard(name, link, cardsList);
+    evt.target.reset();
+    closeModal(popupAddCard);
+}
+cardForm.addEventListener('submit', handleAddCardFormSubmit);
