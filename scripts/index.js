@@ -1,6 +1,6 @@
 const initialCards = [
     {
-        name: "Yosemite Valley",
+        name: "Vale de Yosemite",
         link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg"
     },
     {
@@ -25,10 +25,6 @@ const initialCards = [
     }
 ];
 
-initialCards.forEach((item) => {
-    console.log(item.name);
-});
-
 const popupEditProfile = document.querySelector('#edit-popup');
 const popupAddCard = document.querySelector('#new-card-popup');
 const popupImage = document.querySelector('#image-popup');
@@ -41,6 +37,8 @@ const profileCloeButton = popupEditProfile.querySelector('.popup__close');
 const profileNameInput = popupProfileForm.querySelector('.popup__input_type_name');
 const profileDescriptionInput = popupProfileForm.querySelector('.popup__input_type_description');
 
+const cardsTemplate = document.querySelector('#cards-template').content.querySelector('.card');
+const cardsList = document.querySelector('.cards__list');
 
 function openModal(modal) {
     modal.classList.add('popup_is-opened');
@@ -72,3 +70,29 @@ function handleProfileFormSubmit(evt) {
     closeModal(popupEditProfile);
 }
 popupProfileForm.addEventListener('submit', handleProfileFormSubmit);
+
+function getCardElement(name = "Lugar sem nome", link = "./images/placeholder.jpg") {
+    const cardElement = cardsTemplate.cloneNode(true);
+    const cardImage = cardElement.querySelector('.card__image');
+    const cardTitle = cardElement.querySelector('.card__title');    
+    const likeButton = cardElement.querySelector('.card__like-button');
+    const deleteButton = cardElement.querySelector('.card__delete-button');
+    cardImage.src = link;
+    cardImage.alt = name;
+    cardTitle.textContent = name;
+    likeButton.addEventListener('click', () => {
+        likeButton.classList.toggle('card__like-button_active');
+    });
+    deleteButton.addEventListener('click', () => {
+        cardElement.remove();
+    }); 
+
+    return cardElement;
+}
+function renderCard(name, link, container) {
+    const cardElement = getCardElement(name, link);
+    container.prepend(cardElement);
+}
+initialCards.forEach((item) => {
+    renderCard(item.name, item.link, cardsList);
+});
