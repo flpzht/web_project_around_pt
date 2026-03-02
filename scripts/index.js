@@ -34,7 +34,7 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description'); 
 
 const profileEditButton = document.querySelector('.profile__edit-button');
-const profileCloeButton = popupEditProfile.querySelector('.popup__close');
+const profileCloseButton = popupEditProfile.querySelector('.popup__close');
 const profileNameInput = popupProfileForm.querySelector('.popup__input_type_name');
 const profileDescriptionInput = popupProfileForm.querySelector('.popup__input_type_description');
 
@@ -63,7 +63,7 @@ function closeModal(modal) {
 profileEditButton.addEventListener('click', () => {
     handleOpenEditModal(popupEditProfile);
 });
-profileCloeButton.addEventListener('click', () => {
+profileCloseButton.addEventListener('click', () => {
     closeModal(popupEditProfile);
 });
 imagePopupCloseButton.addEventListener('click', () => {

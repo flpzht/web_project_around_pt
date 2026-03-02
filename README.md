@@ -1,72 +1,107 @@
-# Around The U.S. 🗺️
+# Around The U.S.
 
-Projeto de estudo de HTML, CSS e JavaScript para iniciantes.
+Uma aplicação web front-end interativa para exploração e compartilhamento de fotos de lugares dos Estados Unidos. O projeto foi desenvolvido em etapas como parte de um estudo prático de desenvolvimento web com HTML, CSS e JavaScript puro (Vanilla JS), sem o uso de frameworks ou bibliotecas externas.
 
-## Sobre o Projeto
+## Demo
 
-"Around The U.S." é uma página interativa onde os usuários podem visualizar, adicionar, curtir e remover cartões de fotos de lugares dos Estados Unidos. O projeto começou como uma página estática e foi evoluindo até se tornar uma aplicação web interativa com manipulação do DOM.
+🌐 **[Ver Demo Online](https://flpzht.github.io/web_project_around_pt/)**
+
+## Visão Geral
+
+O projeto partiu de uma página 100% estática, e evoluiu até uma aplicação dinâmica e interativa. O desafio central foi implementar toda a camada de comportamento com JavaScript, praticando os principais conceitos de manipulação do DOM.
 
 <img src="images/project_around_model-page.png">
 
-## Funcionalidades
+### Funcionalidades implementadas
 
-- Visualizar cartões de fotos gerados dinamicamente com JavaScript
-- Curtir cartões (o ícone de coração muda de cor ao clicar)
-- Deletar cartões da página
-- Adicionar novos cartões com nome e link de imagem via pop-up
-- Editar as informações de perfil (nome e descrição) via pop-up
-- Ampliar a imagem ao clicar nela, abrindo um modal
+- Renderização dinâmica de cartões a partir de um array de objetos via `<template>` HTML
+- Adição de novos cartões por meio de formulário em modal, com inserção no topo da lista
+- Exclusão de cartões diretamente do DOM
+- Sistema de curtidas com alternância de estado visual via toggle de classe CSS
+- Visualização ampliada de imagens em modal com legenda dinâmica
+- Edição de informações de perfil (nome e descrição) com pré-preenchimento dos campos
+- Funções reutilizáveis `openModal()` e `closeModal()` para controle de todos os pop-ups
+- Parâmetros padrão nas funções para tratamento de dados incompletos
 
-## Tecnologias Utilizadas
+## Tecnologias e Conceitos
 
-- HTML5
-- CSS3 (metodologia BEM)
-- JavaScript (manipulação do DOM)
+| Tecnologia / Conceito | Aplicação no Projeto |
+|---|---|
+| HTML5 semântico | Estrutura de página com `<header>`, `<main>`, `<footer>`, `<section>`, `<template>` |
+| CSS3 + BEM | Estilização modular com nomenclatura Block__Element--Modifier |
+| JavaScript ES6+ | Manipulação do DOM, eventos, funções, parâmetros padrão, `forEach`, `cloneNode` |
+| `<template>` HTML | Geração eficiente de elementos repetidos sem hardcode no HTML |
+| Event Delegation | Listeners configurados dentro da factory function `getCardElement()` |
+| `evt.preventDefault()` | Controle do comportamento padrão de formulários |
 
-## O que é BEM?
+## Metodologia BEM
 
-BEM (Block, Element, Modifier) é uma forma de organizar os nomes das classes no CSS para deixar o código mais fácil de entender e manter. O padrão segue assim:
+Os estilos seguem a metodologia **BEM (Block, Element, Modifier)**, com arquivos CSS separados por bloco dentro da pasta `blocks/`, todos importados centralmente em `pages/index.css`.
 
-- **Block** (Bloco): componente independente → `.card`
-- **Element** (Elemento): parte de um bloco → `.card__title`
-- **Modifier** (Modificador): variação ou estado → `.card__like-button_is-active`
+```
+.card                         → Bloco
+.card__image                  → Elemento
+.card__like-button_is-active  → Modificador (estado ativo do like)
+.popup_is-opened              → Modificador (controla visibilidade do modal)
+```
+
+Essa abordagem garante escalabilidade, reuso de estilos e facilidade de manutenção.
+
+## Arquitetura do JavaScript
+
+O arquivo `scripts/index.js` foi organizado com separação de responsabilidades:
+
+- **Seleção de elementos DOM** no nível superior do arquivo
+- **`getCardElement(name, link)`** — factory function que clona o template, popula os dados e registra todos os event listeners do cartão
+- **`renderCard(name, link, container)`** — insere o cartão gerado no container via `prepend()`
+- **`openModal(modal)` / `closeModal(modal)`** — funções reutilizáveis para gerenciar todos os modais
+- **`fillProfileForm()`** — pré-popula os campos do formulário com os dados atuais do perfil
+- **`handleProfileFormSubmit(evt)`** / **`handleAddCardFormSubmit(evt)`** — handlers de formulário com `preventDefault()`
 
 ## Estrutura de Pastas
 
 ```
 web_project_around_pt/
-├── index.html
+├── index.html                  # Estrutura principal da página e templates
 ├── pages/
-│   └── index.css           # Importa todos os estilos dos blocos
-├── blocks/                 # Arquivos CSS separados por componente (BEM)
+│   └── index.css               # Ponto de entrada dos estilos (importa todos os blocos)
+├── blocks/                     # Estilos CSS por componente (metodologia BEM)
 │   ├── card.css
 │   ├── profile.css
 │   ├── popup.css
+│   ├── header.css
+│   ├── footer.css
 │   └── ...
-├── images/                 # Imagens do projeto (logo, avatar, ícones)
+├── images/                     # Assets visuais (logo, avatar, placeholder)
 │   └── placeholder.jpg
 ├── scripts/
-│   └── index.js            # Toda a lógica JavaScript do projeto
-├── vendor/                 # Arquivos de terceiros (fontes, normalize.css)
+│   └── index.js                # Toda a lógica de interatividade da aplicação
+├── vendor/                     # Dependências externas (normalize.css, fontes)
 │   └── normalize.css
 └── README.md
 ```
 
-## Como Rodar o Projeto
+## Como Executar Localmente
 
-1. Clone o repositório:
 ```bash
+# Clone o repositório
 git clone https://github.com/flpzht/web_project_around_pt.git
+
+# Acesse a pasta
+cd web_project_around_pt
+
+# Abra no navegador
+open index.html
+# ou simplesmente arraste o arquivo index.html para o navegador
 ```
-2. Abra o arquivo `index.html` no navegador.
 
-Não é necessário instalar nada!
+Não há dependências, build steps ou instalação necessária.
 
-## 🔗 Link do Projeto
+## Próximos Passos
 
-🌐 **[Ver Demo Online](https://flpzht.github.io/web_project_around_pt/)**
-
+O projeto cobre apenas o front-end. Para que os dados (curtidas, novos cartões, edições de perfil) persistam entre sessões, a aplicação precisaria ser integrada a uma API REST — o próximo passo natural no desenvolvimento full-stack.
 
 ## Autor
 
-Felipe Carvalho — [@flpzht](https://github.com/flpzht)
+**Felipe Carvalho**
+GitHub: [@flpzht](https://github.com/flpzht)
