@@ -172,7 +172,7 @@
 .popup__input-error_active {
   display: block;
 }
-.popup__button--submit:disabled {
+.popup__button-submit:disabled {
   background: white;
   color: lightgray;
   border: lightgray 1px solid;
