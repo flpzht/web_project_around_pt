@@ -156,11 +156,14 @@
       <div class="popup__content">
         <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
         <h3 class="popup__title">Editar perfil</h3>
-        <form class="popup__form" id="edit-profile-form">
-          <input class="popup__input popup__input_type_name" name="name" placeholder="Nome" type="text" />
-          <input class="popup__input popup__input_type_description" name="description" placeholder="Sobre mim"
-            type="text" />
-          <button class="button popup__button" type="submit">Salvar</button>
+        <form class="popup__form" id="edit-profile-form" >
+          <input id="name" class="popup__input popup__input_type_name" name="name" placeholder="Nome" type="text" minlength="2" maxlength="40" required/>
+          <span class="name-input-error popup__input-error"></span>
+
+          <input id="description" class="popup__input popup__input_type_description" name="description" placeholder="Sobre mim" type="text" minlength="2" maxlength="200" required/>
+          <span class="description-input-error popup__input-error"></span>
+
+          <button class="button popup__button popup__button--submit" type="submit" name="salvar" disabled>Salvar</button>
         </form>
       </div>
     </div>
@@ -169,9 +172,12 @@
         <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
         <h3 class="popup__title">Novo local</h3>
         <form class="popup__form" id="new-card-form">
-          <input class="popup__input popup__input_type_card-name" name="place-name" placeholder="Título" type="text" />
-          <input class="popup__input popup__input_type_url" name="link" placeholder="Link de Imagem" type="url" />
-          <button class="button popup__button" type="submit">Criar</button>
+          <input id="place-name" class="popup__input popup__input_type_card-name" name="place-name" placeholder="Título" type="text" minlength="2" maxlength="30" required/>
+          <span class="place-name-input-error popup__input-error">Preencha esse campo.</span>
+
+          <input id="link" class="popup__input popup__input_type_url" name="link" placeholder="Link de Imagem" type="url" required/>
+          <span class="link-input-error popup__input-error">Por favor, insira um endereço web.</span>
+          <button class="button popup__button popup__button--submit" type="submit" name="criar" disabled>Criar</button>
         </form>
       </div>
     </div>
