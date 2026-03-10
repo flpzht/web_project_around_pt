@@ -1,3 +1,6 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 /* ==== DADOS INICIAIS ==== */
 
 const initialCards = [
@@ -95,35 +98,6 @@ popupProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
 
 /* ==== CARDS - FUNÇÕES E EVENTOS ==== */
-
-function getCardElement(name, link) {
-    const cardElement = cardsTemplate.cloneNode(true);
-    const cardImage = cardElement.querySelector('.card__image');
-    const cardTitle = cardElement.querySelector('.card__title');
-    const likeButton = cardElement.querySelector('.card__like-button');
-    const deleteButton = cardElement.querySelector('.card__delete-button');
-
-    cardImage.src = link;
-    cardImage.alt = name;
-    cardTitle.textContent = name;
-
-    likeButton.addEventListener('click', () => {
-        likeButton.classList.toggle('card__like-button_is-active');
-    });
-
-    deleteButton.addEventListener('click', () => {
-        cardElement.remove();
-    });
-
-    cardImage.addEventListener('click', () => {
-        imagePopupImage.src = link;
-        imagePopupImage.alt = name;
-        imagePopupCaption.textContent = name;
-        openModal(popupImage);
-    });
-
-    return cardElement;
-}
 
 function renderCard(name, link, container) {
     const cardElement = getCardElement(name, link);
