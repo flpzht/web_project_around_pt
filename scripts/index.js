@@ -1,132 +1,114 @@
+// =================== IMPORTS ===================
 import Card from './components/Card.js';
 import FormValidator from './components/FormValidator.js';
-// import Section from './components/Section.js';
-// import PopupWithImage from './components/PopupWithImage.js';
-// import PopupWithForm from './components/PopupWithForms.js';
-// import UserInfo from './components/UserInfo.js';
-import { openModal, closeModal } from './utils.js';
+import Section from './components/Section.js';
+import PopupWithImage from './components/PopupWithImage.js';
+import PopupWithForm from './components/PopupWithForms.js';
+import UserInfo from './components/UserInfo.js';
 
-/* ==== DADOS INICIAIS ==== */
-
+// =================== DADOS INICIAIS ===================
 const initialCards = [
-    { name: "Vale de Yosemite",        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg"    },
-    { name: "Lago Louise",             link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg" },
-    { name: "Montanhas Carecas",       link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg" },
-    { name: "Latemar",                 link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg"     },
-    { name: "Parque Nacional Vanoise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg"     },
-    { name: "Lago di Braies",          link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg"        },
+  { name: "Vale de Yosemite", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg" },
+  { name: "Lago Louise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg" },
+  { name: "Montanhas Carecas", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg" },
+  { name: "Latemar", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg" },
+  { name: "Parque Nacional Vanoise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg" },
+  { name: "Lago di Braies", link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg" },
 ];
 
-
-/* ==== SELEÇÃO DE ELEMENTOS - POPUPS ==== */
+// =================== ELEMENTOS HTML ===================
+const profileEditButton = document.querySelector('.profile__edit-button');
+const cardAddButton = document.querySelector('.profile__add-button');
 
 const popupEditProfile = document.querySelector('#edit-popup');
 const popupAddCard = document.querySelector('#new-card-popup');
 const popupImage = document.querySelector('#image-popup');
 
+const profileForm = popupEditProfile.querySelector('.popup__form');
+const profileNameInput = profileForm.querySelector('.popup__input_type_name');
+const profileDescriptionInput = profileForm.querySelector('.popup__input_type_description');
+const profileSaveButton = profileForm.querySelector('.popup__button');
 
-/* ==== SELEÇÃO DE ELEMENTOS - PERFIL ==== */
-
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
-const profileEditButton = document.querySelector('.profile__edit-button');
-
-const popupProfileForm = popupEditProfile.querySelector('#edit-profile-form');
-const profileCloseButton = popupEditProfile.querySelector('.popup__close');
-const profileNameInput = popupProfileForm.querySelector('.popup__input_type_name');
-const profileDescriptionInput = popupProfileForm.querySelector('.popup__input_type_description');
-const profileSaveButton = popupProfileForm.querySelector('.popup__button');
-
-
-/* ==== SELEÇÃO DE ELEMENTOS - CARDS ==== */
-
-const cardsList = document.querySelector('.cards__list');
-
-const cardAddButton = document.querySelector('.profile__add-button');
-const cardForm = popupAddCard.querySelector('#new-card-form');
-const cardCloseButton = popupAddCard.querySelector('.popup__close');
+const cardForm = popupAddCard.querySelector('.popup__form');
 const cardNameInput = cardForm.querySelector('.popup__input_type_card-name');
 const cardLinkInput = cardForm.querySelector('.popup__input_type_url');
 const cardCreateButton = cardForm.querySelector('.popup__button');
 
+// =================== USER INFO ===================
+const userInfo = new UserInfo({nameSelector: '.profile__title', descriptionSelector: '.profile__description'});
 
-/* ==== SELEÇÃO DE ELEMENTOS - POPUP DE IMAGEM ==== */
+// =================== POPUPS ===================
+// Popup de imagem
+const popupWithImage = new PopupWithImage('#image-popup');
+popupWithImage.setEventListeners();
 
-const imagePopupCloseButton = popupImage.querySelector('.popup__close');
-const imagePopupImage = popupImage.querySelector('.popup__image');
-const imagePopupCaption = popupImage.querySelector('.popup__caption');
-
-
-/* ==== PERFIL - FUNÇÕES E EVENTOS ==== */
-
-const profileValidator = new FormValidator(popupProfileForm, profileSaveButton);
-profileValidator.enableValidation();
-
-function handleOpenEditModal() {
-    profileNameInput.value = profileTitle.textContent;
-    profileDescriptionInput.value = profileDescription.textContent;
-    profileValidator.resetForm();
-    openModal(popupEditProfile);
-}
-
-function handleProfileFormSubmit(evt) {
-    evt.preventDefault();
-    profileTitle.textContent = profileNameInput.value;
-    profileDescription.textContent = profileDescriptionInput.value;
-    closeModal(popupEditProfile);
-}
-
-profileEditButton.addEventListener('click', handleOpenEditModal);
-profileCloseButton.addEventListener('click', () => closeModal(popupEditProfile));
-popupProfileForm.addEventListener('submit', handleProfileFormSubmit);
-
-
-/* ==== CARDS - FUNÇÕES E EVENTOS ==== */
-
-const cardValidator = new FormValidator(cardForm, cardCreateButton);
-cardValidator.enableValidation();
-
-function handleImageClick(name, link) {
-    imagePopupImage.src = link;
-    imagePopupImage.alt = name;
-    imagePopupCaption.textContent = name;
-    openModal(popupImage);
-}
-
-function renderCard(cardData, container) {
-    const card = new Card(cardData, '#cards-template', handleImageClick);
-    container.prepend(card.getCardElement());
-}
-
-function handleAddCardFormSubmit(evt) {
-    evt.preventDefault();
-    renderCard({ name: cardNameInput.value, link: cardLinkInput.value }, cardsList);
-    evt.target.reset();
-    closeModal(popupAddCard);
-}
-
-cardAddButton.addEventListener('click', () => {
-    cardValidator.resetForm();
-    openModal(popupAddCard);
+// Popup de edição de perfil
+const popupEditProfileForm = new PopupWithForm('#edit-popup', {
+  handleFormSubmit: (data) => {
+    // Atualiza informações do usuário
+    userInfo.setUserInfo({ name: data.name, description: data.description });
+    popupEditProfileForm.close();
+  }
 });
-cardCloseButton.addEventListener('click', () => closeModal(popupAddCard));
-cardForm.addEventListener('submit', handleAddCardFormSubmit);
+popupEditProfileForm.setEventListeners();
 
+// Popup de adicionar card
+const popupAddCardForm = new PopupWithForm('#new-card-popup', {
+  handleFormSubmit: (data) => {
+    const newCard = new Card(
+      { name: data['place-name'], link: data.link },
+      '#cards-template',
+      (name, link) => popupWithImage.open(name, link)
+    );
+    const cardElement = newCard.getCardElement();
+    section.addItem(cardElement);
+    popupAddCardForm.close();
+  }
+});
+popupAddCardForm.setEventListeners();
 
-/* ==== POPUP DE IMAGEM - EVENTOS ==== */
+// =================== SECTION ===================
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const card = new Card(
+        item,
+        '#cards-template',
+        (name, link) => popupWithImage.open(name, link)
+      );
+      const cardElement = card.getCardElement();
+      section.addItem(cardElement);
+    }
+  },
+  '.cards__list'
+);
 
-imagePopupCloseButton.addEventListener('click', () => closeModal(popupImage));
+// Renderiza os cards iniciais
+section.renderer = function () {
+  this._items.forEach(item => {
+    const card = new Card(item, '#cards-template', (name, link) => popupWithImage.open(name, link));
+    const cardElement = card.getCardElement();
+    this._container.append(cardElement);
+  });
+};
+section.renderItems();
 
-
-/* ==== FECHAR POPUP CLICANDO FORA DO CONTEÚDO ==== */
-
-document.querySelectorAll('.popup').forEach((popup) => {
-    popup.addEventListener('mousedown', (evt) => {
-        if (evt.target === popup) closeModal(popup);
-    });
+// =================== EVENT LISTENERS ===================
+// Abrir popup de edição de perfil
+profileEditButton.addEventListener('click', () => {
+  const { name, description } = userInfo.getUserInfo();
+  profileNameInput.value = name;
+  profileDescriptionInput.value = description;
+  popupEditProfileForm.open();
 });
 
+// Abrir popup de adicionar card
+cardAddButton.addEventListener('click', () => popupAddCardForm.open());
 
-/* ==== INICIALIZAÇÃO ==== */
+// =================== VALIDAÇÃO DE FORMULÁRIOS ===================
+const formValidatorProfile = new FormValidator(profileForm, profileSaveButton);
+formValidatorProfile.enableValidation();
 
-initialCards.forEach((cardData) => renderCard(cardData, cardsList));
+const formValidatorCard = new FormValidator(cardForm, cardCreateButton);
+formValidatorCard.enableValidation();
