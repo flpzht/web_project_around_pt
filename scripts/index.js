@@ -1,7 +1,6 @@
 import Card from "./components/Card.js";
 import FormValidator from "./components/FormValidator.js";
 import Section from "./components/Section.js";
-import Popup from "./components/Popup.js";
 import PopupWithForm from "./components/PopupWithForms.js";
 import PopupWithImage from "./components/PopupWithImage.js";
 import UserInfo from "./components/UserInfo.js";
@@ -48,13 +47,9 @@ const profileDescription = document.querySelector(".profile__description");
 const profileEditButton = document.querySelector(".profile__edit-button");
 
 const popupProfileForm = popupEditProfile.querySelector("#edit-profile-form");
-const profileCloseButton = popupEditProfile.querySelector(".popup__close");
-const profileNameInput = popupProfileForm.querySelector(
-  ".popup__input_type_name",
-);
-const profileDescriptionInput = popupProfileForm.querySelector(
-  ".popup__input_type_description",
-);
+// const profileCloseButton = popupEditProfile.querySelector(".popup__close");
+const profileNameInput = popupProfileForm.querySelector(".popup__input_type_name",);
+const profileDescriptionInput = popupProfileForm.querySelector(".popup__input_type_description",);
 const profileSaveButton = popupProfileForm.querySelector(".popup__button");
 
 /* ==== SELEÇÃO DE ELEMENTOS - CARDS ==== */
@@ -63,36 +58,16 @@ const cardsList = document.querySelector(".cards__list");
 
 const cardAddButton = document.querySelector(".profile__add-button");
 const cardForm = popupAddCard.querySelector("#new-card-form");
-const cardCloseButton = popupAddCard.querySelector(".popup__close");
-const cardNameInput = cardForm.querySelector(".popup__input_type_card-name");
-const cardLinkInput = cardForm.querySelector(".popup__input_type_url");
+// const cardCloseButton = popupAddCard.querySelector(".popup__close");
+// const cardNameInput = cardForm.querySelector(".popup__input_type_card-name");
+// const cardLinkInput = cardForm.querySelector(".popup__input_type_url");
 const cardCreateButton = cardForm.querySelector(".popup__button");
 
 /* ==== SELEÇÃO DE ELEMENTOS - POPUP DE IMAGEM ==== */
 
-const imagePopupCloseButton = popupImage.querySelector(".popup__close");
-const imagePopupImage = popupImage.querySelector(".popup__image");
-const imagePopupCaption = popupImage.querySelector(".popup__caption");
-
-/* ==== PERFIL - FUNÇÕES E EVENTOS ==== */
-
-// function handleOpenEditModal() {
-//     profileNameInput.value = profileTitle.textContent;
-//     profileDescriptionInput.value = profileDescription.textContent;
-//     profileValidator.resetForm();
-//     openModal(popupEditProfile);
-// }
-
-// function handleProfileFormSubmit(evt) {
-//     evt.preventDefault();
-//     profileTitle.textContent = profileNameInput.value;
-//     profileDescription.textContent = profileDescriptionInput.value;
-//     closeModal(popupEditProfile);
-// }
-
-// profileEditButton.addEventListener('click', handleOpenEditModal);
-// profileCloseButton.addEventListener('click', () => closeModal(popupEditProfile));
-// popupProfileForm.addEventListener('submit', handleProfileFormSubmit);
+// const imagePopupCloseButton = popupImage.querySelector(".popup__close");
+// const imagePopupImage = popupImage.querySelector(".popup__image");
+// const imagePopupCaption = popupImage.querySelector(".popup__caption");
 
 /* ==== VALIDATION ==== */
 
@@ -102,42 +77,7 @@ profileValidator.enableValidation();
 const cardValidator = new FormValidator(cardForm, cardCreateButton);
 cardValidator.enableValidation();
 
-/* ==== POPUP DE IMAGEM - EVENTOS ==== */
-
-const popupWithImage = new PopupWithImage("#image-popup");
-popupWithImage.setEventListeners();
-
-imagePopupCloseButton.addEventListener("click", () => popupWithImage.close());
-imagePopupImage.addEventListener("click", () => popupWithImage.close());
-
-/* ==== POPUP DE FORMULÁRIO - PROFILE ==== */
-
-const profilePopupWithForm = new PopupWithForm("#edit-popup", {
-  handleFormSubmit: (evt) => {
-    evt.preventDefault();
-    profileTitle.textContent = profileNameInput.value;
-    profileDescription.textContent = profileDescriptionInput.value;
-    profilePopupWithForm.close();
-  },
-});
-profilePopupWithForm.setEventListeners();
-
-/* ==== USER INFO DEFAULT ==== */
-
-const userInfo = new UserInfo({
-  nameSelector: ".profile__title",
-  descriptionSelector: ".profile__description",
-});
-userInfo.getUserInfo();
-
-profileEditButton.addEventListener("click", () => {
-  profilePopupWithForm.open();
-  const userData = userInfo.getUserInfo();
-  profileNameInput.value = userData.name;
-  profileDescriptionInput.value = userData.description;
-});
-
-/*===== RENDERIZAR DEFAULT CARD LIST =====*/
+/*===== DEFAULT CARD LIST =====*/
 
 const defaultCardList = new Section(
   {
@@ -155,3 +95,67 @@ const defaultCardList = new Section(
 );
 
 defaultCardList.renderItems();
+
+/* ==== POPUP DE IMAGEM - EVENTOS ==== */
+
+const popupWithImage = new PopupWithImage("#image-popup");
+popupWithImage.setEventListeners();
+
+/* ==== POPUP DE PERFIL - EVENTOS ==== */
+
+const profilePopup = new PopupWithForm("#edit-popup", {
+    handleFormSubmit: (data) => {
+        profileTitle.textContent = data.name;
+        profileDescription.textContent = data.description;
+        profilePopup.close();
+    }
+});
+
+profilePopup.setEventListeners();
+
+/* ==== POPUP DE NOVO CARD - EVENTOS ==== */
+
+const cardPopup = new PopupWithForm("#new-card-popup", {
+    handleFormSubmit: (data) => {
+        const card = new Card(
+            {
+                name: data["place-name"] || data.name,
+                link: data.link
+            },
+            "#cards-template",
+            {
+                handleImageClick: (name, link) => {
+                    popupWithImage.open(name, link);
+                }
+            }
+        );
+
+        const cardElement = card.getCardElement();
+        cardsList.prepend(cardElement);
+
+        cardPopup.close();
+    }
+});
+
+cardPopup.setEventListeners();
+
+/* ==== USER INFO DEFAULT ==== */
+
+const userInfo = new UserInfo({
+  nameSelector: ".profile__title",
+  descriptionSelector: ".profile__description",
+});
+userInfo.getUserInfo();
+
+/* ==== EVENTOS DE ABERTURA DE POPUP ==== */
+
+profileEditButton.addEventListener("click", () => {
+    const userData = userInfo.getUserInfo();
+    profileNameInput.value = userData.name;
+    profileDescriptionInput.value = userData.description;
+    profilePopup.open();
+});
+
+cardAddButton.addEventListener("click", () => {
+  cardPopup.open();
+});
