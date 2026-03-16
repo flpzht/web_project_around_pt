@@ -38,7 +38,6 @@ const initialCards = [
 
 const popupEditProfile = document.querySelector("#edit-popup");
 const popupAddCard = document.querySelector("#new-card-popup");
-const popupImage = document.querySelector("#image-popup");
 
 /* ==== SELEÇÃO DE ELEMENTOS - PERFIL ==== */
 
@@ -47,27 +46,15 @@ const profileDescription = document.querySelector(".profile__description");
 const profileEditButton = document.querySelector(".profile__edit-button");
 
 const popupProfileForm = popupEditProfile.querySelector("#edit-profile-form");
-// const profileCloseButton = popupEditProfile.querySelector(".popup__close");
 const profileNameInput = popupProfileForm.querySelector(".popup__input_type_name",);
 const profileDescriptionInput = popupProfileForm.querySelector(".popup__input_type_description",);
 const profileSaveButton = popupProfileForm.querySelector(".popup__button");
 
 /* ==== SELEÇÃO DE ELEMENTOS - CARDS ==== */
 
-const cardsList = document.querySelector(".cards__list");
-
 const cardAddButton = document.querySelector(".profile__add-button");
 const cardForm = popupAddCard.querySelector("#new-card-form");
-// const cardCloseButton = popupAddCard.querySelector(".popup__close");
-// const cardNameInput = cardForm.querySelector(".popup__input_type_card-name");
-// const cardLinkInput = cardForm.querySelector(".popup__input_type_url");
 const cardCreateButton = cardForm.querySelector(".popup__button");
-
-/* ==== SELEÇÃO DE ELEMENTOS - POPUP DE IMAGEM ==== */
-
-// const imagePopupCloseButton = popupImage.querySelector(".popup__close");
-// const imagePopupImage = popupImage.querySelector(".popup__image");
-// const imagePopupCaption = popupImage.querySelector(".popup__caption");
 
 /* ==== VALIDATION ==== */
 
@@ -110,7 +97,6 @@ const profilePopup = new PopupWithForm("#edit-popup", {
         profilePopup.close();
     }
 });
-
 profilePopup.setEventListeners();
 
 /* ==== POPUP DE NOVO CARD - EVENTOS ==== */
@@ -119,7 +105,7 @@ const cardPopup = new PopupWithForm("#new-card-popup", {
     handleFormSubmit: (data) => {
         const card = new Card(
             {
-                name: data["place-name"] || data.name,
+                name: data["place-name"],
                 link: data.link
             },
             "#cards-template",
@@ -131,12 +117,11 @@ const cardPopup = new PopupWithForm("#new-card-popup", {
         );
 
         const cardElement = card.getCardElement();
-        cardsList.prepend(cardElement);
+        defaultCardList.addItem(cardElement);
 
         cardPopup.close();
     }
 });
-
 cardPopup.setEventListeners();
 
 /* ==== USER INFO DEFAULT ==== */
@@ -145,11 +130,11 @@ const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   descriptionSelector: ".profile__description",
 });
-userInfo.getUserInfo();
 
 /* ==== EVENTOS DE ABERTURA DE POPUP ==== */
 
 profileEditButton.addEventListener("click", () => {
+    profileValidator.resetForm();
     const userData = userInfo.getUserInfo();
     profileNameInput.value = userData.name;
     profileDescriptionInput.value = userData.description;

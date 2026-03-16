@@ -2,6 +2,7 @@ export default class FormValidator {
     constructor(form, submitButton) {
         this._form = form;
         this._submitButton = submitButton;
+        this._inputs = this._form.querySelectorAll('.popup__input')
     }
 
     _showInputError(input) {
@@ -24,6 +25,11 @@ export default class FormValidator {
 
     resetForm() {
         this._form.reset();
+
+        this._inputs.forEach((input) => {
+            this._hideInputError(input);
+        });
+
         this._submitButton.disabled = true;
     }
 
