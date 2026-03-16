@@ -61,8 +61,6 @@ const imagePopupCaption = popupImage.querySelector('.popup__caption');
 
 /* ==== PERFIL - FUNÇÕES E EVENTOS ==== */
 
-// const profileValidator = new FormValidator(popupProfileForm, profileSaveButton);
-// profileValidator.enableValidation();
 
 // function handleOpenEditModal() {
 //     profileNameInput.value = profileTitle.textContent;
@@ -83,11 +81,10 @@ const imagePopupCaption = popupImage.querySelector('.popup__caption');
 // popupProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
 
-// /* ==== POPUPS ==== */
-// const popupWithImage = new PopupWithImage('#image-popup');
-// popupWithImage.setEventListeners();
+/* ==== VALIDATION ==== */
 
-/* ==== CARDS - FUNÇÕES E EVENTOS ==== */
+const profileValidator = new FormValidator(popupProfileForm, profileSaveButton);
+profileValidator.enableValidation();
 
 const cardValidator = new FormValidator(cardForm, cardCreateButton);
 cardValidator.enableValidation();
@@ -100,33 +97,20 @@ popupWithImage.setEventListeners();
 imagePopupCloseButton.addEventListener('click', () => popupWithImage.close());
 imagePopupImage.addEventListener('click', () => popupWithImage.close());
 
-/* ==== POPUP DE FORMULÁRIO - EVENTOS ==== */
 
-const popupWithForm = new PopupWithForm('#new-card-popup', {
+
+/* ==== POPUP DE FORMULÁRIO - PROFILE ==== */
+
+const profilePopupWithForm = new PopupWithForm('#edit-popup', {
     handleFormSubmit: (evt) => {
         evt.preventDefault();
-        renderCard({ name: cardNameInput.value, link: cardLinkInput.value }, cardsList);
-        evt.target.reset();
+        profileTitle.textContent = profileNameInput.value;
+        profileDescription.textContent = profileDescriptionInput.value;
     }
 });
-popupWithForm.setEventListeners();
+profilePopupWithForm.setEventListeners();
 
 
-/* ==== CARDS - EVENTOS ==== */
-cardAddButton.addEventListener('click', () => {
-    cardValidator.resetForm();
-    popupWithForm.open();
-});
-
-cardCloseButton.addEventListener('click', () => popupWithForm.close());
-
-
-/* ==== PROFILE EVENTS ==== */
-
-profileEditButton.addEventListener('click', () => {
-    cardValidator.resetForm();
-    popupWithForm.open();
-});
 
 /* ==== USER INFO DEFAULT ==== */
 
@@ -134,11 +118,15 @@ const userInfo = new UserInfo({
     nameSelector: '.profile__title',
     descriptionSelector: '.profile__description'
 });
-
 userInfo.getUserInfo();
 
 
-/*==== RENDEIZAR PROFILE DEFAULT ====*/
+profileEditButton.addEventListener('click', () => {
+
+  profilePopupWithForm.open();
+});
+
+
 
 
 
@@ -157,33 +145,3 @@ const defaultCardList = new Section({
 }, '.cards__list');
 
 defaultCardList.renderItems();
-
-// function handleAddCardFormSubmit(evt) {
-//     evt.preventDefault();
-//     renderCard({ name: cardNameInput.value, link: cardLinkInput.value }, cardsList);
-//     evt.target.reset();
-//     closeModal(popupAddCard);
-// }
-
-// cardAddButton.addEventListener('click', () => {
-//     cardValidator.resetForm();
-//     openModal(popupAddCard);
-// });
-// cardCloseButton.addEventListener('click', () => closeModal(popupAddCard));
-// cardForm.addEventListener('submit', handleAddCardFormSubmit);
-
-
-// /* ==== POPUP DE IMAGEM - EVENTOS ==== */
-
-// imagePopupCloseButton.addEventListener('click', () => closeModal(popupImage));
-
-
-// /* ==== FECHAR POPUP CLICANDO FORA DO CONTEÚDO ==== */
-
-// document.querySelectorAll('.popup').forEach((popup) => {
-//     popup.addEventListener('mousedown', (evt) => {
-//         if (evt.target === popup) closeModal(popup);
-//     });
-// });
-
-
