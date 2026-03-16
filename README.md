@@ -1,6 +1,8 @@
 # Around The U.S.
 
-Uma aplicação web front-end interativa para exploração e compartilhamento de fotos de lugares dos Estados Unidos. O projeto foi desenvolvido em etapas como parte de um estudo prático de desenvolvimento web com HTML, CSS e JavaScript puro (Vanilla JS), sem o uso de frameworks ou bibliotecas externas.
+Aplicação web interativa para compartilhamento de fotos desenvolvida com **HTML, CSS e JavaScript (Vanilla JS)**.
+
+O projeto evolui de uma página estática para uma aplicação estruturada utilizando **arquitetura modular e programação orientada a objetos**.
 
 ## Demo
 
@@ -8,98 +10,200 @@ Uma aplicação web front-end interativa para exploração e compartilhamento de
 
 ## Visão Geral
 
-O projeto partiu de uma página 100% estática, e evoluiu até uma aplicação dinâmica e interativa. O desafio central foi implementar toda a camada de comportamento com JavaScript, praticando os principais conceitos de manipulação do DOM.
+O projeto começou como uma página totalmente estática e evoluiu gradualmente para uma aplicação dinâmica. Ao longo do desenvolvimento foram implementados conceitos essenciais de front-end moderno, incluindo manipulação avançada do DOM, reutilização de componentes e organização do código em módulos independentes.
 
-<img src="images/project_around_model-page.png">
+A aplicação permite visualizar, adicionar, curtir e excluir cartões de fotos, além de editar informações do perfil do usuário.
 
-### Funcionalidades implementadas
+<img src="images/project_around_model-page.png" width="70%">
 
-- Renderização dinâmica de cartões a partir de um array de objetos via `<template>` HTML
-- Adição de novos cartões por meio de formulário em modal, com inserção no topo da lista
-- Exclusão de cartões diretamente do DOM
-- Sistema de curtidas com alternância de estado visual via toggle de classe CSS
-- Visualização ampliada de imagens em modal com legenda dinâmica
-- Edição de informações de perfil (nome e descrição) com pré-preenchimento dos campos
-- Funções reutilizáveis `openModal()` e `closeModal()` para controle de todos os pop-ups
-- Parâmetros padrão nas funções para tratamento de dados incompletos
+## Funcionalidades Implementadas
+
+* Renderização dinâmica de cartões a partir de um array de objetos
+* Criação de novos cartões via formulário em popup
+* Inserção de novos cartões no topo da lista
+* Exclusão de cartões diretamente do DOM
+* Sistema de curtidas com alternância de estado visual
+* Visualização ampliada de imagens em popup com legenda dinâmica
+* Edição das informações de perfil do usuário
+* Validação de formulários em tempo real
+* Reset automático de formulários ao abrir popups
+* Arquitetura JavaScript modular com classes reutilizáveis
 
 ## Tecnologias e Conceitos
 
-| Tecnologia / Conceito | Aplicação no Projeto |
-|---|---|
-| HTML5 semântico | Estrutura de página com `<header>`, `<main>`, `<footer>`, `<section>`, `<template>` |
-| CSS3 + BEM | Estilização modular com nomenclatura Block__Element--Modifier |
-| JavaScript ES6+ | Manipulação do DOM, eventos, funções, parâmetros padrão, `forEach`, `cloneNode` |
-| `<template>` HTML | Geração eficiente de elementos repetidos sem hardcode no HTML |
-| Event Delegation | Listeners configurados dentro da factory function `getCardElement()` |
-| `evt.preventDefault()` | Controle do comportamento padrão de formulários |
+| Tecnologia / Conceito           | Aplicação no Projeto                                                  |
+| ------------------------------- | --------------------------------------------------------------------- |
+| HTML5 Semântico                 | Estrutura da página com `<header>`, `<main>`, `<section>`, `<footer>` |
+| CSS3 + BEM                      | Estilização modular utilizando Block, Element, Modifier               |
+| JavaScript ES6+                 | Classes, módulos ES6, manipulação do DOM, eventos                     |
+| Programação Orientada a Objetos | Componentização da lógica em classes reutilizáveis                    |
+| ES Modules                      | Separação de responsabilidades usando `import` e `export`             |
+| Validação de Formulários        | Validação nativa do navegador com mensagens customizadas              |
+| Template HTML                   | Base para geração dinâmica de cartões                                 |
 
 ## Metodologia BEM
 
-Os estilos seguem a metodologia **BEM (Block, Element, Modifier)**, com arquivos CSS separados por bloco dentro da pasta `blocks/`, todos importados centralmente em `pages/index.css`.
+O projeto utiliza a metodologia **BEM (Block, Element, Modifier)** para organização dos estilos CSS.
+
+Exemplos de nomenclatura:
 
 ```
-.card                         → Bloco
-.card__image                  → Elemento
-.card__like-button_is-active  → Modificador (estado ativo do like)
-.popup_is-opened              → Modificador (controla visibilidade do modal)
+.card
+.card__image
+.card__like-button_is-active
+.popup_is-opened
 ```
 
-Essa abordagem garante escalabilidade, reuso de estilos e facilidade de manutenção.
+Os estilos são organizados em arquivos separados dentro da pasta `blocks/`, e todos são importados pelo arquivo central `pages/index.css`.
 
-## Arquitetura do JavaScript
+Essa abordagem melhora a manutenção, evita conflitos de estilos e facilita a escalabilidade do projeto.
 
-O arquivo `scripts/index.js` foi organizado com separação de responsabilidades:
+## Arquitetura da Aplicação
 
-- **Seleção de elementos DOM** no nível superior do arquivo
-- **`getCardElement(name, link)`** — factory function que clona o template, popula os dados e registra todos os event listeners do cartão
-- **`renderCard(name, link, container)`** — insere o cartão gerado no container via `prepend()`
-- **`openModal(modal)` / `closeModal(modal)`** — funções reutilizáveis para gerenciar todos os modais
-- **`fillProfileForm()`** — pré-popula os campos do formulário com os dados atuais do perfil
-- **`handleProfileFormSubmit(evt)`** / **`handleAddCardFormSubmit(evt)`** — handlers de formulário com `preventDefault()`
+A aplicação segue uma arquitetura modular baseada em **Programação Orientada a Objetos**, onde cada responsabilidade da interface é encapsulada em uma classe específica.
+
+### Fluxo de funcionamento
+
+index.js (entry point)
+↓
+Instancia os componentes principais
+↓
+Section renderiza os cartões
+↓
+Card controla eventos do cartão
+↓
+Popup gerencia modais
+↓
+PopupWithForms lida com submissão de formulários
+↓
+FormValidator controla validação dos inputs
+↓
+UserInfo gerencia dados do perfil
+
+### Principais Componentes
+
+**Card**
+
+Responsável pela criação de cartões de imagem.
+Gerencia estrutura do cartão, eventos de curtida, exclusão e clique para visualização da imagem.
+
+**Section**
+
+Gerencia a renderização de múltiplos cartões na página.
+Recebe um renderer que define como cada cartão deve ser criado e inserido no container.
+
+**Popup**
+
+Classe base responsável por controlar o comportamento geral dos popups (abrir, fechar e gerenciamento de eventos).
+
+**PopupWithForms**
+
+Extende `Popup` para trabalhar especificamente com formulários.
+Captura dados do formulário e executa a função de callback no envio.
+
+**PopupWithImage**
+
+Extende `Popup` para exibir imagens ampliadas com legenda dinâmica.
+
+**FormValidator**
+
+Gerencia a validação dos formulários em tempo real, exibindo mensagens de erro e controlando o estado do botão de envio.
+
+**UserInfo**
+
+Responsável por gerenciar e atualizar as informações exibidas no perfil do usuário.
 
 ## Estrutura de Pastas
 
 ```
 web_project_around_pt/
-├── index.html                  # Estrutura principal da página e templates
-├── pages/
-│   └── index.css               # Ponto de entrada dos estilos (importa todos os blocos)
-├── blocks/                     # Estilos CSS por componente (metodologia BEM)
+├── blocks/
 │   ├── card.css
-│   ├── profile.css
-│   ├── popup.css
-│   ├── header.css
+│   ├── cards.css
+│   ├── content.css
 │   ├── footer.css
-│   └── ...
-├── images/                     # Assets visuais (logo, avatar, placeholder)
+│   ├── header.css
+│   ├── page.css
+│   ├── popup.css
+│   └── profile.css
+│
+├── images/
+│   ├── add-icon.svg
+│   ├── avatar.jpg
+│   ├── close.svg
+│   ├── delete-icon.svg
+│   ├── edit-icon.svg
+│   ├── like-active.svg
+│   ├── like-inactive.svg
+│   ├── logo.svg
 │   └── placeholder.jpg
+│
+├── pages/
+│   └── index.css
+│
 ├── scripts/
-│   └── index.js                # Toda a lógica de interatividade da aplicação
-├── vendor/                     # Dependências externas (normalize.css, fontes)
+│   ├── components/
+│   │   ├── Card.js
+│   │   ├── FormValidator.js
+│   │   ├── Popup.js
+│   │   ├── PopupWithForms.js
+│   │   ├── PopupWithImage.js
+│   │   ├── Section.js
+│   │   └── UserInfo.js
+│   │
+│   └── index.js
+│
+├── vendor/
+│   ├── fonts/
+│   ├── fonts.css
 │   └── normalize.css
-└── README.md
+│
+├── index.html
+├── README.md
+└── .prettierignore
 ```
 
 ## Como Executar Localmente
 
 ```bash
-# Clone o repositório
+# Clonar o repositório
 git clone https://github.com/flpzht/web_project_around_pt.git
 
-# Acesse a pasta
+# Entrar na pasta do projeto
 cd web_project_around_pt
 
-# Abra no navegador
+# Abrir no navegador
 open index.html
-# ou simplesmente arraste o arquivo index.html para o navegador
 ```
 
-Não há dependências, build steps ou instalação necessária.
+Também é possível simplesmente abrir o arquivo `index.html` diretamente no navegador.
+
+Nenhuma dependência ou processo de build é necessário.
+
+## Aprendizados do Projeto
+
+Durante o desenvolvimento deste projeto foram praticados diversos conceitos importantes de front-end moderno:
+
+- Organização de código com **arquitetura modular**
+- Aplicação de **Programação Orientada a Objetos em JavaScript**
+- Separação de responsabilidades entre componentes
+- Manipulação avançada do **DOM**
+- Reutilização de componentes de interface
+- Estruturação de CSS com **metodologia BEM**
+- Controle de estado visual com classes CSS
+- Validação de formulários com JavaScript
+- Uso de **ES Modules (import / export)** para modularização
+
+O projeto serviu como exercício prático para compreender como aplicações front-end podem ser organizadas de forma escalável mesmo sem o uso de frameworks.
 
 ## Próximos Passos
 
-O projeto cobre apenas o front-end. Para que os dados (curtidas, novos cartões, edições de perfil) persistam entre sessões, a aplicação precisaria ser integrada a uma API REST — o próximo passo natural no desenvolvimento full-stack.
+O projeto atualmente funciona apenas no lado do cliente. Como evolução natural, a aplicação poderia ser integrada a uma **API REST** para permitir:
+
+* Persistência de cartões
+* Persistência de curtidas
+* Atualização de perfil armazenada no servidor
+* Autenticação de usuários
 
 ## Autor
 
