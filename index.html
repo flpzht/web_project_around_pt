@@ -16,7 +16,10 @@
     </header>
     <main class="content">
       <section class="profile page__section">
-        <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+        <div class="profile__avatar">
+          <img class="profile__image" src="./images/avatar.jpg" alt="Avatar" />
+          <button aria-label="Editar foto de perfil" class="profile__avatar-button" type="button"></button>
+        </div>
         <div class="profile__info">
           <h1 class="profile__title">Jacques Cousteau</h1>
           <button aria-label="Editar perfil" class="profile__edit-button" type="button"></button>
@@ -32,6 +35,7 @@
     <footer class="footer page__section">
       <p class="footer__copyright">© 2026 Around The U.S.</p>
     </footer>
+
     <div class="popup" id="edit-popup">
       <div class="popup__content">
         <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
@@ -45,6 +49,19 @@
         </form>
       </div>
     </div>
+
+    <div class="popup popup_edit-avatar popup_is-opened" id="edit-avatar-popup">
+      <div class="popup__content popup__content_content_avatar">
+        <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
+        <h3 class="popup__title">Alterar a foto do perfil</h3>
+        <form class="popup__form" id="edit-avatar-form">
+          <input id="avatar-link" class="popup__input popup__input_type_url" name="avatar-link" placeholder="Link da nova foto de perfil" type="url" required/>
+          <span class="avatar-link-input-error popup__input-error">Por favor, insira um endereço web.</span>
+          <button class="button popup__button popup__button-submit" type="submit" name="salvar" disabled>Salvar</button>
+        </form>
+      </div>
+    </div>
+
     <div class="popup" id="new-card-popup">
       <div class="popup__content">
         <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
@@ -52,13 +69,23 @@
         <form class="popup__form" id="new-card-form">
           <input id="place-name" class="popup__input popup__input_type_card-name" name="place-name" placeholder="Título" type="text" minlength="2" maxlength="30" required/>
           <span class="place-name-input-error popup__input-error">Preencha esse campo.</span>
-
           <input id="link" class="popup__input popup__input_type_url" name="link" placeholder="Link de Imagem" type="url" required/>
           <span class="link-input-error popup__input-error">Por favor, insira um endereço web.</span>
           <button class="button popup__button popup__button-submit" type="submit" name="criar" disabled>Criar</button>
         </form>
       </div>
     </div>
+
+    <div class="popup popup_type_confirmation" id="confirmation-popup">
+      <div class="popup__content popup__content_content_confirmation">
+        <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
+        <h3 class="popup__title">Tem certeza?</h3>
+        <form class="popup__form" id="delete-card-form">
+          <button class="button popup__button popup__button-submit" type="submit" name="sim">Sim</button>          
+        </form>
+      </div>
+    </div>
+
     <div class="popup" id="image-popup">
       <div class="popup__content popup__content_content_image">
         <button aria-label="Fechar pop-up" class="popup__close" type="button"></button>
@@ -67,6 +94,7 @@
       </div>
     </div>
   </div>
+
   <template id="cards-template">
     <li class="card">
       <img src="" alt="" class="card__image">

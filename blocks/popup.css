@@ -117,6 +117,18 @@
   margin: 0;
 }
 
+.popup__content_content_confirmation {
+  max-width: 430px;
+  min-height: 181px;
+}
+
+.popup__content_content_avatar {
+  max-width: 430px;
+  min-height: 272px;
+}
+
+
+
 @media screen and (max-width: 544px) {
   .popup {
     bottom: 112px;
