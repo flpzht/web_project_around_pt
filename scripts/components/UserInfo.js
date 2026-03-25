@@ -1,17 +1,15 @@
+import { api } from "./Api.js";
+
 export default class UserInfo {
-    constructor({ nameSelector, descriptionSelector, avatarSelector }) {
-        this._nameElement = document.querySelector(nameSelector);
-        this._descriptionElement = document.querySelector(descriptionSelector);
-        this._avatarElement = document.querySelector(avatarSelector);
-    }
+  constructor(api) {
+    this._api = api;
+  }
 
-    getUserInfo() {
-        return { name: this._nameElement.textContent, description: this._descriptionElement.textContent, avatar: this._avatarElement.src };
-    }
+  getUserInfo() {
+    return this._api.getUserInfo();
+  }
 
-    setUserInfo({ name, description, avatar }) {
-        this._nameElement.textContent = name;
-        this._descriptionElement.textContent = description;
-        this._avatarElement.src = avatar;
-    }
+  setUserInfo({ name, about }) {
+    return this._api.setUserInfo({ name, about });
+  }
 }

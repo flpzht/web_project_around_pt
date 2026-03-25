@@ -115,9 +115,4 @@ const api = new Api({
   },
 });
 
-api.getAppInfo()
-.then(([userData, cards]) => {
-  userInfo.setUserInfo(userData);
-  cardList.renderItems(cards);
-})
-.catch((err) => console.log(err));
+export { api };

@@ -9,32 +9,32 @@ import PopupWithConfirmation from "./components/PopupWithConfirmation.js";
 
 /* ==== DADOS INICIAIS ==== */
 
-const initialCards = [
-  {
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-  },
-  {
-    name: "Montanhas Carecas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-  },
-  {
-    name: "Parque Nacional Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-  }
-];
+// const initialCards = [
+//   {
+//     name: "Vale de Yosemite",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+//   },
+//   {
+//     name: "Lago Louise",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+//   },
+//   {
+//     name: "Montanhas Carecas",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
+//   },
+//   {
+//     name: "Latemar",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
+//   },
+//   {
+//     name: "Parque Nacional Vanoise",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
+//   },
+//   {
+//     name: "Lago di Braies",
+//     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
+//   }
+// ];
 
 /* ==== SELEÇÃO DE ELEMENTOS - POPUPS ==== */
 
@@ -68,6 +68,29 @@ const cardAddButton = document.querySelector(".profile__add-button");
 const cardForm = popupAddCard.querySelector("#new-card-form");
 const cardCreateButton = cardForm.querySelector(".popup__button");
 
+/* ==== CONEXÃO COM API ==== */
+
+const api = new Api({
+    baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
+    headers: {
+        Authorization: "63d45159-fd92-477c-9dd6-c2859fb9ad61",
+        "Content-Type": "application/json",
+    },
+});
+
+
+
+
+/* ==== CONEXÃO COM API - USER INFO ==== */
+
+const userInfo = new UserInfo(api);
+const defaultUserData = userInfo.getUserInfo();
+
+
+/* ==== CONEXÃO COM API - CARDS ==== */
+
+const defaultCardData = api.getInitialCards();
+
 /* ==== VALIDATION ==== */
 
 const profileValidator = new FormValidator(popupProfileForm, profileSaveButton);
@@ -88,6 +111,25 @@ popupWithImage.setEventListeners();
 
 const popupWithConfirmation = new PopupWithConfirmation("#confirmation-popup");
 popupWithConfirmation.setEventListeners();
+
+/* ==== DEFAULT PROFILE INFO ==== */
+
+
+/* ==== POPUP DE PERFIL - BTN ==== */
+
+profileEditButton.addEventListener("click", () => {
+  profileValidator.resetForm();
+  profileNameInput.value = defaultUserData.name;
+  profileDescriptionInput.value = defaultUserData.description;
+  profilePopup.open();
+});
+
+/* ==== POPUP DE NOVO CARD - EVENTOS ==== */
+
+cardAddButton.addEventListener("click", () => {
+  cardPopup.open();
+});
+
 
 /* ==== POPUP DE PERFIL - EVENTOS ==== */
 
@@ -119,7 +161,7 @@ profileAvatarButton.addEventListener("click", () => {
 
 const defaultCardList = new Section(
   {
-    items: initialCards,
+    items: defaultCardData,
     renderer: (cardData) => {
       const card = new Card(cardData, "#cards-template", {
         handleImageClick: (name, link) => {
@@ -165,24 +207,11 @@ const cardPopup = new PopupWithForm("#new-card-popup", {
 });
 cardPopup.setEventListeners();
 
-/* ==== USER INFO DEFAULT ==== */
+// api.getAppInfo()
+//   .then(([defaultUserData, defaultCardData]) => {
+//     userInfo.setUserInfo({ name: defaultUserData.name, about: defaultCardData.about});
+//     defaultCardData.renderItems();
+//   })
+//   .catch((err) => console.log(err));
 
-const userInfo = new UserInfo({
-  nameSelector: ".profile__title",
-  descriptionSelector: ".profile__description",
-  avatarSelector: ".profile__image",
-});
 
-/* ==== EVENTOS DE ABERTURA DE POPUP ==== */
-
-profileEditButton.addEventListener("click", () => {
-  profileValidator.resetForm();
-  const userData = userInfo.getUserInfo();
-  profileNameInput.value = userData.name;
-  profileDescriptionInput.value = userData.description;
-  profilePopup.open();
-});
-
-cardAddButton.addEventListener("click", () => {
-  cardPopup.open();
-});
