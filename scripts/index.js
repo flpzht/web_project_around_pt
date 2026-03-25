@@ -52,6 +52,8 @@ const popupProfileForm = popupEditProfile.querySelector("#edit-profile-form");
 const profileNameInput = popupProfileForm.querySelector(".popup__input_type_name");
 const profileDescriptionInput = popupProfileForm.querySelector(".popup__input_type_description");
 const profileSaveButton = popupProfileForm.querySelector(".popup__button");
+const profileImage = document.querySelector(".profile__image");
+
 
 /* ==== SELEÇÃO DE ELEMENTOS - AVATAR ==== */
 
@@ -100,6 +102,18 @@ profilePopup.setEventListeners();
 
 /* ==== POPUP DE AVATAR - EVENTOS ==== */
 
+const avatarPopup = new PopupWithForm("#edit-avatar-popup", {
+  handleFormSubmit: (data) => {
+    profileImage.src = data["avatar-link"];
+    avatarPopup.close();
+  },
+});
+avatarPopup.setEventListeners();
+
+profileAvatarButton.addEventListener("click", () => {
+  avatarPopup.open();
+});
+
 
 /*===== DEFAULT CARD LIST =====*/
 
@@ -130,7 +144,7 @@ const cardPopup = new PopupWithForm("#new-card-popup", {
     const card = new Card(
       {
         name: data["place-name"],
-        link: data.link,
+        link: data["card-link"],
       },
       "#cards-template",
       {
@@ -156,6 +170,7 @@ cardPopup.setEventListeners();
 const userInfo = new UserInfo({
   nameSelector: ".profile__title",
   descriptionSelector: ".profile__description",
+  avatarSelector: ".profile__image",
 });
 
 /* ==== EVENTOS DE ABERTURA DE POPUP ==== */
@@ -170,18 +185,4 @@ profileEditButton.addEventListener("click", () => {
 
 cardAddButton.addEventListener("click", () => {
   cardPopup.open();
-});
-
-/* ==== POPUP DE AVATAR - EVENTOS ==== */
-
-const avatarPopup = new PopupWithForm("#edit-avatar-popup", {
-  handleFormSubmit: (data) => {
-    userInfo.setUserInfo(data["avatar-link"]);
-    avatarPopup.close();
-  },
-});
-avatarPopup.setEventListeners();
-
-profileAvatarButton.addEventListener("click", () => {
-  avatarPopup.open();
 });
