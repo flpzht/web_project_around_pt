@@ -6,7 +6,6 @@ import PopupWithForm from "./components/PopupWithForms.js";
 import PopupWithImage from "./components/PopupWithImage.js";
 import UserInfo from "./components/UserInfo.js";
 import PopupWithConfirmation from "./components/PopupWithConfirmation.js";
-// import PopupWithAvatar from "./components/PopupWithAvatar.js";
 
 /* ==== DADOS INICIAIS ==== */
 
@@ -98,6 +97,9 @@ const profilePopup = new PopupWithForm("#edit-popup", {
   },
 });
 profilePopup.setEventListeners();
+
+/* ==== POPUP DE AVATAR - EVENTOS ==== */
+
 
 /*===== DEFAULT CARD LIST =====*/
 
