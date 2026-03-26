@@ -1,9 +1,5 @@
 export default class Card {
-  constructor(
-    { name, link, _id, isLiked },
-    templateSelector,
-    { handleImageClick, handleDeleteClick, handleLikeClick }
-  ) {
+  constructor({ name, link, _id, isLiked }, templateSelector, { handleImageClick, handleDeleteClick, handleLikeClick }) {
     this._name = name;
     this._link = link;
     this._id = _id;
@@ -56,7 +52,9 @@ export default class Card {
     this._cardImage = this._cardElement.querySelector(".card__image");
     this._cardTitle = this._cardElement.querySelector(".card__title");
     this._likeButton = this._cardElement.querySelector(".card__like-button");
-    this._deleteButton = this._cardElement.querySelector(".card__delete-button");
+    this._deleteButton = this._cardElement.querySelector(
+      ".card__delete-button",
+    );
 
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;

@@ -16,13 +16,13 @@ const popupAddCard = document.querySelector("#new-card-popup");
 
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const profileImage = document.querySelector(".profile__image");
 const profileEditButton = document.querySelector(".profile__edit-button");
 
 const popupProfileForm = popupEditProfile.querySelector("#edit-profile-form");
 const profileNameInput = popupProfileForm.querySelector(".popup__input_type_name");
 const profileDescriptionInput = popupProfileForm.querySelector(".popup__input_type_description");
 const profileSaveButton = popupProfileForm.querySelector(".popup__button");
-const profileImage = document.querySelector(".profile__image");
 
 /* ==== SELEÇÃO DE ELEMENTOS - AVATAR ==== */
 
