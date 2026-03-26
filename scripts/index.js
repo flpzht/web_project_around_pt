@@ -117,12 +117,14 @@ api.getAppInfo()
 
 const profilePopup = new PopupWithForm("#edit-popup", {
   handleFormSubmit: (data) => {
+    profilePopup.setLoading(true);
     api.setUserInfo({ name: data.name, about: data.description })
       .then((updatedUser) => {
         userInfo.setUserInfo(updatedUser);
         profilePopup.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => profilePopup.setLoading(false));
   },
 });
 profilePopup.setEventListeners();
@@ -139,12 +141,14 @@ profileEditButton.addEventListener("click", () => {
 
 const avatarPopup = new PopupWithForm("#edit-avatar-popup", {
   handleFormSubmit: (data) => {
+    avatarPopup.setLoading(true);
     api.changeAvatar({ avatar: data["avatar-link"] })
       .then((updatedUser) => {
         userInfo.setUserInfo(updatedUser);
         avatarPopup.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => avatarPopup.setLoading(false));
   },
 });
 avatarPopup.setEventListeners();
@@ -157,13 +161,15 @@ profileAvatarButton.addEventListener("click", () => {
 
 const cardPopup = new PopupWithForm("#new-card-popup", {
   handleFormSubmit: (data) => {
+    cardPopup.setLoading(true);
     api.addCard({ name: data["place-name"], link: data["card-link"] })
       .then((newCard) => {
         const cardElement = createCard(newCard);
         defaultCardList.addItem(cardElement);
         cardPopup.close();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => cardPopup.setLoading(false));
   },
 });
 cardPopup.setEventListeners();
